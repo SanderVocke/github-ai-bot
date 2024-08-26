@@ -1,2 +1,2 @@
-github
-boto3
+PyGithub==1.55
+boto3==1.26.0
