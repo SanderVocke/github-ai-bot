@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import zipfile
 import tempfile
+import sys
 
 DIRS = [
     'python-dynamodb-pydeps',
@@ -26,7 +27,7 @@ def create_zip(directory):
         if os.path.exists(directory + "/requirements.txt"):
             print("Installing layer dependencies...")
             with tempfile.TemporaryDirectory() as venv_dir:
-                subprocess.check_call(['python', '-m', 'venv', venv_dir])
+                subprocess.check_call([sys.executable, '-m', 'venv', venv_dir])
                 subprocess.check_call([venv_dir + '/bin/python', '-m', 'pip',
                                        "install", "-r", directory + '/requirements.txt'])
                 os.makedirs(temp_dir + "/python")
