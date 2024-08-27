@@ -22,14 +22,21 @@ def lambda_handler(event, context):
         repo_name = body['repo_name']
         base_branch = body['base_branch'] if 'base_branch' in body else None
 
-        submit_pr_from_patch(
+        pr_url = submit_pr_from_patch(
             repo_name,
-            patch_content,
+            patch_content.encode('utf-8'),
             user_email,
             description,
             branch_name,
             base_branch
         )
+
+        return {
+            'statusCode': 200,
+            'body': json.dumps({
+                'message': f"Pull Request created @ {pr_url}"
+            })
+        }
 
     except ResponseException as e:
         return {
@@ -38,15 +45,3 @@ def lambda_handler(event, context):
                 'message': e.errorMessage
             })
         }
-    except Exception as e:
-        return {
-            'statusCode': 500,
-            'body': f'Internal server error:\n{str(e)}'
-        }
-
-    return {
-        'statusCode': 200,
-        'body': json.dumps({
-            'message': f"Pull Request created"
-        })
-    }
