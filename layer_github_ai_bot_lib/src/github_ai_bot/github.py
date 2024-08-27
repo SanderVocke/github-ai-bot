@@ -85,7 +85,7 @@ def sparse_tree_checkout(repo, sha, file_paths_filter, target_dir):
                         if c.encoding and c.encoding == "base64":
                             content = base64.b64decode(content).decode('utf-8')
                         logger.debug(f"Writing blob tree item {path}")
-                        file.write(c.content)
+                        file.write(content)
                 else:
                     logger.debug(f'not writing because not blob or no content. type: {c.type}. has content: {c.content != None}')
 
