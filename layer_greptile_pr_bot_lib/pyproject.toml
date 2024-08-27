@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "greptile_pr_bot"
+version = "0.1.0"
+description = "Bot with automated AI actions based on Greptile"
+authors = [{ name = "Sander Vocke", email = "sandervocke@gmail.com" }]
+
+dependencies = [
+    "PyGithub==2.4.0",
+    "boto3==1.35.5",
+    "patch-ng==1.18",
+]
