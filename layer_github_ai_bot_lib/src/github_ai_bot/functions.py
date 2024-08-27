@@ -29,7 +29,7 @@ def submit_pr_from_patch(
                 patchset_paths.add(p)
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        tree = github.sparse_tree_checkout(repo, parent_sha, lambda path: path.encode('ascii') not in patchset_paths, temp_dir)
+        tree = github.sparse_tree_checkout(repo, parent_sha, lambda path: path.encode('utf-8') not in patchset_paths, temp_dir)
         patches.apply_patchset(patchset, temp_dir)
         sha = github.sparse_tree_commit(repo, tree, parent_sha, temp_dir, commit_msg)
         branch_name, branch = github.create_new_branch(repo, branch_name, base_branch_name)

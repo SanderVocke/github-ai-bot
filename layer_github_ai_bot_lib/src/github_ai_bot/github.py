@@ -4,6 +4,7 @@ import github
 import os
 import glob
 import json
+import base64
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -80,6 +81,9 @@ def sparse_tree_checkout(repo, sha, file_paths_filter, target_dir):
                 if c.type in ['blob', 'file'] and c.content:
                     with open(full_path, 'w') as file: # TODO: set mode
                         logger.debug(f"Writing blob tree item {path}")
+                        content = c.content
+                        if c.encoding and c.encoding == "base64":
+                            content = base64.b64decode(content).decode('utf-8')
                         file.write(c.content)
                 else:
                     logger.debug(f'not writing because not blob or no content. type: {c.type}. has content: {c.content != None}')
