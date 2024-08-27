@@ -7,8 +7,8 @@ import json
 import base64
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler())
+# logger.setLevel(logging.DEBUG)
+# logger.addHandler(logging.StreamHandler())
 
 def connect_to_repository(repo_name):
     logger.info("Authenticating with GitHub app")
@@ -17,12 +17,13 @@ def connect_to_repository(repo_name):
     auth = github.Auth.AppAuth(GITHUB_APP_ID, GITHUB_PRIVATE_KEY)
     gi = github.GithubIntegration(auth=auth,seconds_between_requests=0,seconds_between_writes=0)
     installation = gi.get_installations()[0]
+    token = gi.get_access_token(installation.id).token
     gh = installation.get_github_for_installation()
     logger.info("Getting repository handle")
     repo = gh.get_repo(repo_name)
     if not repo:
         raise Exception("Could not get a repository handle")
-    return repo
+    return (repo, token)
 
 def get_branch_names(repo):
     logger.debug("Getting branches")

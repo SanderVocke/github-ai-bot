@@ -1,4 +1,4 @@
-from github_ai_bot.functions import submit_pr_from_patch
+from github_ai_bot.functions import greptile_query
 from github_ai_bot.exceptions import ResponseException
 from github_ai_bot.logging import stream_and_level_for_all_loggers
 
@@ -16,29 +16,21 @@ def lambda_handler(event, context):
         body = json.loads(event['body'])
 
         # Extract details from the request body
-        patch_content = body['patch_content']
+        message = body['message']
         branch_name = body['branch_name'] if 'branch_name' in body else None
-        user_email = body['user_email']
-        description = body['description']
-        commit_msg = body['commit_msg'] if 'commit_msg' in body else 'commit'
         repo_name = body['repo_name']
-        base_branch = body['base_branch'] if 'base_branch' in body else None
 
-        pr_url = submit_pr_from_patch(
+        response = greptile_query(
+            message = message,
             repo_name = repo_name,
-            patch_content = patch_content,
-            user_email = user_email,
-            description = description,
-            branch_name = branch_name,
-            base_branch_name = base_branch,
-            commit_msg = commit_msg
+            branch_name = branch_name
         )
-
+        
+        logger.debug(f"Response: {response.text}")
+        
         return {
-            'statusCode': 200,
-            'body': json.dumps({
-                'message': f"Pull Request created @ {pr_url}"
-            })
+            'statusCode': response.status_code,
+            'body': json.dumps(response.text)
         }
 
     except ResponseException as e:

@@ -4,5 +4,5 @@
     "commit_msg": "add a small file",
     "repo_name": "SanderVocke/ai-sandbox",
     "base_branch": "main",
-    "patch_content": "diff --git a/new_file.txt b/new_file.txt\nnew file mode 100644\nindex 0000000..ceb4be2\n--- /dev/null\n+++ b/new_file.txt\n@@ -0,0 +1 @@\\n+I am new!"
+    "patch_content": "diff --git a/new_file.txt b/new_file.txt\nnew file mode 100644\nindex 0000000..ceb4be2\n--- /dev/null\n+++ b/new_file.txt\n@@ -0,0 +1 @@\n+I am new!"
 }
