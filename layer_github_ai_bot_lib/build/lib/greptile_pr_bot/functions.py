@@ -1,5 +1,5 @@
-import greptile_pr_bot.github as github
-import greptile_pr_bot.patches as patches
+import github_ai_bot.github as github
+import github_ai_bot.patches as patches
 
 import tempfile
 

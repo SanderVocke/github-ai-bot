@@ -3,9 +3,9 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "greptile_pr_bot"
+name = "github_ai_bot"
 version = "0.1.0"
-description = "Bot with automated AI actions based on Greptile"
+description = "Bot with automated AI actions"
 authors = [{ name = "Sander Vocke", email = "sandervocke@gmail.com" }]
 
 dependencies = [

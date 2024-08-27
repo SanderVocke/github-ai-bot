@@ -1,5 +1,5 @@
-import greptile_pr_bot.github as github
-import greptile_pr_bot.patches as patches
+import github_ai_bot.github as github
+import github_ai_bot.patches as patches
 
 import tempfile
 
@@ -8,6 +8,7 @@ def submit_pr_from_patch(
         patch_content,
         user_email,
         description,
+        commit_msg,
         branch_name=None,
         base_branch_name=None):
 
@@ -30,7 +31,7 @@ def submit_pr_from_patch(
     with tempfile.TemporaryDirectory() as temp_dir:
         tree = github.sparse_tree_checkout(repo, parent_sha, lambda path: path.encode('utf-8') not in patchset_paths, temp_dir)
         patches.apply_patchset(patchset, temp_dir)
-        sha = github.sparse_tree_commit(repo, tree, parent_sha, temp_dir, "test commit")
+        sha = github.sparse_tree_commit(repo, tree, parent_sha, temp_dir, commit_msg)
         branch_name, branch = github.create_new_branch(repo, branch_name, base_branch_name)
         github.update_branch_tip(branch, sha)
         pr_url = github.create_pull_request(repo, branch_name, base_branch_name, user_email, description)

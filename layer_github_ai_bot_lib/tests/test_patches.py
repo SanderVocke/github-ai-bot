@@ -10,7 +10,7 @@ import json
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 sys.path.insert(0, f'{script_dir}/../src')
-from greptile_pr_bot import patches
+from github_ai_bot import patches
 
 test_folders = glob.glob(script_dir + "/patch_testcases/*")
 
