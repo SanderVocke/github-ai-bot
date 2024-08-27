@@ -1,7 +1,5 @@
-Hello, world!
-
 # github-ai-bot
-A GitHub bot with AI-powered functionalities.
+SanderVocke's personal GitHub bot with AI-powered functionalities.
 
 This bot is implemented as an Amazon AWS Lambda function to be ran in the cloud.
 
