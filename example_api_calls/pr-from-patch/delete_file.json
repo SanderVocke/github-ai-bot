@@ -1,0 +1,8 @@
+{
+    "user_email": "sandervocke@gmail.com",
+    "description": "modify README",
+    "commit_msg": "modify README",
+    "repo_name": "SanderVocke/ai-sandbox",
+    "base_branch": "main",
+    "patch_content": "diff --git a/README.md b/README.md\ndeleted file mode 100644\nindex ffe2bf1..0000000\n--- a/README.md\n+++ /dev/null\n@@ -1,2 +0,0 @@\n-# ai-sandbox\n-sandbox repo for bots to play in\n"
+}

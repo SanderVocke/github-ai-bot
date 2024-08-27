@@ -25,11 +25,12 @@ def lambda_handler(event, context):
 
         pr_url = submit_pr_from_patch(
             repo_name = repo_name,
-            patch_content = patch_content.encode('utf-8'),
+            patch_content = patch_content,
             user_email = user_email,
             description = description,
             branch_name = branch_name,
-            base_branch_name = base_branch
+            base_branch_name = base_branch,
+            commit_msg = commit_msg
         )
 
         return {

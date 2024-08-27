@@ -14,7 +14,7 @@ def connect_to_repository(repo_name):
     # github.enable_console_debug_logging()
     # logging.basicConfig(level=logging.DEBUG)
     auth = github.Auth.AppAuth(GITHUB_APP_ID, GITHUB_PRIVATE_KEY)
-    gi = github.GithubIntegration(auth=auth)
+    gi = github.GithubIntegration(auth=auth,seconds_between_requests=0,seconds_between_writes=0)
     installation = gi.get_installations()[0]
     gh = installation.get_github_for_installation()
     logger.info("Getting repository handle")
@@ -66,7 +66,7 @@ def sparse_tree_checkout(repo, sha, file_paths_filter, target_dir):
         path = tree_item.path
         if not file_paths_filter(path):
             logger.debug(f"Skipping {path}, filtered out")
-        logger.debug(f'Checking out {path} into {target_dir}')
+        logger.debug(f'Attempting to check out {path} into {target_dir}')
 
         def checkout_contentfile(c):
             if isinstance (c, list):
@@ -74,12 +74,16 @@ def sparse_tree_checkout(repo, sha, file_paths_filter, target_dir):
                     checkout_contentfile(cc)
             else:
                 full_path = target_dir + '/' + path
+                logger.debug(f'full item path: {full_path}')
                 full_dir_path = os.path.dirname(full_path)
                 os.makedirs(full_dir_path, exist_ok=True)
-                if c.type == 'blob' and c.content:
+                if c.type in ['blob', 'file'] and c.content:
                     with open(full_path, 'w') as file: # TODO: set mode
                         logger.debug(f"Writing blob tree item {path}")
                         file.write(c.content)
+                else:
+                    logger.debug(f'not writing because not blob or no content. type: {c.type}. has content: {c.content != None}')
+
         contentfile = repo.get_contents(path, ref=sha)
         checkout_contentfile(contentfile)
 
@@ -123,7 +127,7 @@ def sparse_tree_commit(repo, parent_tree, parent_sha, checked_out_dir, message):
 def update_branch_tip(branch_object, sha):
     branch_object.edit(sha=sha)
 
-def create_pull_request(repo, branch_name, base_branch_name, title, body):
+def create_pull_request(repo, title, branch_name, base_branch_name, body):
     logger.debug("Creating pull request")
     pr = repo.create_pull(title=title,
                      body=body,
